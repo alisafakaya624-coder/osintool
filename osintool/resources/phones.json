@@ -1,0 +1,83 @@
+{
+  "$schema": "phones.schema.json",
+  "Numlookup": {
+    "errorType": "message",
+    "errorMsg": ["not found", "no data", "invalid phone number"],
+    "url": "https://www.numlookup.com/{}",
+    "urlMain": "https://www.numlookup.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "Whitepages (Reverse Phone)": {
+    "errorType": "message",
+    "errorMsg": ["No results", "No listings found", "not found"],
+    "url": "https://www.whitepages.com/phone/{}",
+    "urlMain": "https://www.whitepages.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "Zlookup": {
+    "errorType": "message",
+    "errorMsg": ["Not Found", "invalid"],
+    "url": "https://www.zlookup.com/{}",
+    "urlMain": "https://www.zlookup.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "SpyDialer": {
+    "errorType": "message",
+    "errorMsg": ["no results found", "not found"],
+    "url": "https://spydialer.com/default.aspx?phone={}",
+    "urlMain": "https://spydialer.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "FreeCarrierLookup": {
+    "errorType": "message",
+    "errorMsg": ["Unknown"],
+    "request_method": "POST",
+    "request_payload": {"phone": "{}"},
+    "urlProbe": "https://freecarrierlookup.com/",
+    "url": "https://freecarrierlookup.com/",
+    "urlMain": "https://freecarrierlookup.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "Truecaller (Search)": {
+    "errorType": "message",
+    "errorMsg": ["not found", "No results"],
+    "url": "https://www.truecaller.com/search/us/{}",
+    "urlMain": "https://www.truecaller.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "Phonebooks.com": {
+    "errorType": "message",
+    "errorMsg": ["No records found", "not found"],
+    "url": "https://www.phonebooks.com/phone-number/{}",
+    "urlMain": "https://www.phonebooks.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "ThatsThem (Reverse Phone)": {
+    "errorType": "message",
+    "errorMsg": ["No results", "not found"],
+    "url": "https://thatsthem.com/phone/{}",
+    "urlMain": "https://thatsthem.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "PeopleFinders": {
+    "errorType": "message",
+    "errorMsg": ["No records found", "not found"],
+    "url": "https://www.peoplefinders.com/phone/{}",
+    "urlMain": "https://www.peoplefinders.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "Google (Phone Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results found for", "did not match any documents"],
+    "url": "https://www.google.com/search?q={}",
+    "urlMain": "https://google.com/",
+    "phone_claimed": "+14155552671"
+  },
+  "Bing (Phone Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results found for"],
+    "url": "https://www.bing.com/search?q={}",
+    "urlMain": "https://www.bing.com/",
+    "phone_claimed": "+14155552671"
+  }
+}

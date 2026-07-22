@@ -1,0 +1,132 @@
+{
+  "$schema": "names.schema.json",
+  "Google": {
+    "errorType": "message",
+    "errorMsg": ["No results found for"],
+    "url": "https://www.google.com/search?q={}",
+    "urlMain": "https://google.com/",
+    "name_claimed": "John Doe"
+  },
+  "Bing": {
+    "errorType": "message",
+    "errorMsg": ["No results found for"],
+    "url": "https://www.bing.com/search?q={}",
+    "urlMain": "https://www.bing.com/",
+    "name_claimed": "John Doe"
+  },
+  "Facebook (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results found"],
+    "url": "https://www.facebook.com/search/top/?q={}",
+    "urlMain": "https://www.facebook.com/",
+    "name_claimed": "John Doe"
+  },
+  "LinkedIn (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results found", "0 results"],
+    "url": "https://www.linkedin.com/search/results/people/?keywords={}",
+    "urlMain": "https://www.linkedin.com/",
+    "headers": {
+      "accept-language": "en-US,en;q=0.9"
+    },
+    "name_claimed": "John Doe"
+  },
+  "Twitter (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results for", "0 results"],
+    "url": "https://twitter.com/search?q={}&f=user",
+    "urlMain": "https://twitter.com/",
+    "name_claimed": "John Doe"
+  },
+  "YouTube (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results found"],
+    "url": "https://www.youtube.com/results?search_query={}",
+    "urlMain": "https://www.youtube.com/",
+    "name_claimed": "John Doe"
+  },
+  "Reddit (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results", "no results"],
+    "url": "https://www.reddit.com/search/?q={}",
+    "urlMain": "https://www.reddit.com/",
+    "name_claimed": "John Doe"
+  },
+  "TikTok (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results", "0 results"],
+    "url": "https://www.tiktok.com/search?q={}",
+    "urlMain": "https://www.tiktok.com/",
+    "name_claimed": "John Doe"
+  },
+  "Instagram (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No users found"],
+    "url": "https://www.instagram.com/web/search/topsearch/?query={}",
+    "urlMain": "https://www.instagram.com/",
+    "name_claimed": "John Doe"
+  },
+  "GitHub (Search)": {
+    "errorType": "message",
+    "errorMsg": ["We couldn't find any"],
+    "url": "https://github.com/search?q={}&type=users",
+    "urlMain": "https://github.com/",
+    "name_claimed": "John Doe"
+  },
+  "PeekYou": {
+    "errorType": "message",
+    "errorMsg": ["No results found", "0 people found"],
+    "url": "https://peekyou.com/{}",
+    "urlMain": "https://peekyou.com/",
+    "name_claimed": "John Doe"
+  },
+  "Whitepages (Name)": {
+    "errorType": "message",
+    "errorMsg": ["No results", "No listings found"],
+    "url": "https://www.whitepages.com/name/{}",
+    "urlMain": "https://www.whitepages.com/",
+    "name_claimed": "John Doe"
+  },
+  "TruePeopleSearch": {
+    "errorType": "message",
+    "errorMsg": ["No results found"],
+    "url": "https://www.truepeoplesearch.com/result?name={}",
+    "urlMain": "https://www.truepeoplesearch.com/",
+    "name_claimed": "John Doe"
+  },
+  "Pinterest (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results found"],
+    "url": "https://www.pinterest.com/search/pins/?q={}",
+    "urlMain": "https://www.pinterest.com/",
+    "name_claimed": "John Doe"
+  },
+  "Tumblr (Search)": {
+    "errorType": "message",
+    "errorMsg": ["No results", "Nobody has posted"],
+    "url": "https://www.tumblr.com/search/{}",
+    "urlMain": "https://www.tumblr.com/",
+    "name_claimed": "John Doe"
+  },
+  "DuckDuckGo": {
+    "errorType": "message",
+    "errorMsg": ["No results found", "No more results"],
+    "url": "https://duckduckgo.com/?q={}",
+    "urlMain": "https://duckduckgo.com/",
+    "name_claimed": "John Doe"
+  },
+  "Yandex": {
+    "errorType": "message",
+    "errorMsg": ["Nothing found", "No results"],
+    "url": "https://yandex.com/search/?text={}",
+    "urlMain": "https://yandex.com/",
+    "name_claimed": "John Doe"
+  },
+  "Spokeo": {
+    "errorType": "message",
+    "errorMsg": ["Sorry, we couldn't find", "No results"],
+    "url": "https://www.spokeo.com/{}",
+    "urlMain": "https://www.spokeo.com/",
+    "name_claimed": "John Doe"
+  }
+}

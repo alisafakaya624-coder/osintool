@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.egg-info/
+venv/
+.venv/
+.env
+*.enc
+*.salt
+*.dat
+*_session
+osintool_wa_state/
+osintool_tg_session
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
