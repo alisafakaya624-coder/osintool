@@ -6,7 +6,7 @@ Multi-platform OSINT search tool — username, name, and phone number lookup acr
 
 - **Public search** — 300+ sites (username / name / phone)
 - **Authenticated search** — login with your own accounts for deep intel
-  - **Instagram** — recursive follower/following graph crawler (2+ levels deep)
+  - **Instagram** — recursive follower/following graph crawler (multi-level)
   - **GitHub** — profile info, repos, metadata
   - **Reddit** — posts, comments, karma stats
   - **Telegram** — profile, common groups, online status, profile photo
@@ -27,107 +27,107 @@ pip install -e ".[auth]"
 
 ## Usage
 
-### 1. Public Username Search (300+ sites)
+### 1. Public Search (300+ sites)
 
 ```bash
-# Tek kullanıcı adı ile her yerde ara
-osintool -u hedefkullanici
+# Search username across 300+ platforms
+osintool -u targetuser
 
-# İsim ara
-osintool -n "Ali Safa Kaya"
+# Search by full name
+osintool -n "John Doe"
 
-# Telefon numarası ara
-osintool -p "+905551234567"
+# Search by phone number
+osintool -p "+14155552671"
 
-# Herşeyi dene
-osintool --all "hedefkullanici"
+# Try all types with the same query
+osintool --all "targetuser"
 ```
 
 ---
 
-### 2. Authenticated Search (Instagram, GitHub, Reddit, Telegram, WhatsApp)
+### 2. Authenticated Search
 
-Önce hesap bilgilerini kaydet (şifrelenerek saklanır):
+Save your credentials first (stored encrypted):
 
 ```bash
-osintool --auth-config --set-instagram    # Instagram email + şifre
+osintool --auth-config --set-instagram    # Instagram email + password
 osintool --auth-config --set-github       # GitHub personal access token
 osintool --auth-config --set-reddit       # Reddit API credentials
-osintool --auth-config --set-telegram     # Telegram telefon + API bilgileri
+osintool --auth-config --set-telegram     # Telegram phone + API credentials
 ```
 
-Bilgiler `~/.osintool_auth.enc` dosyasında şifrelenir.
+Credentials are encrypted and stored in `~/.osintool_auth.enc`.
 
 ---
 
 ### 3. Instagram Follower Graph (Recursive Crawler) 🔥
 
-**En güçlü özellik.** Hesabına girip hedef kullanıcının takipçilerini ve takip ettiklerini çeker, sonra onların da takipçilerini çeker — zincirleme.
+Logs into your account and crawls the target's followers/following recursively — building a complete connection graph.
 
 ```bash
-# Varsayılan: 2 seviye derinlik, her seviyede 5 kişi
-osintool --auth hedefkullanici --auth-platforms instagram
+# Default: 2 levels deep, 5 users per level
+osintool --auth targetuser --auth-platforms instagram
 
-# 3 seviye, her seviyede 15 kişi (daha derin)
-osintool --auth hedefkullanici --auth-depth 3 --auth-max 15
+# 3 levels deep, 15 users per level (deeper crawl)
+osintool --auth targetuser --auth-depth 3 --auth-max 15
 
-# Sadece 1 seviye, 20 kişi (hızlı tarama)
-osintool --auth hedefkullanici --auth-depth 1 --auth-max 20
+# 1 level, 20 users (quick scan)
+osintool --auth targetuser --auth-depth 1 --auth-max 20
 
-# Tüm platformlarda ara (instagram + github + reddit + telegram)
-osintool --auth hedefkullanici
+# Search across all platforms (instagram + github + reddit + telegram)
+osintool --auth targetuser
 ```
 
-**Çıktı örneği:**
+**Sample output:**
 ```
-@hedefkullanici (Ad Soyad) [15234F / 756FG]
-  Takiptekiler: @kullanici1
-    @kullanici1 (Kullanıcı Bir) [502F / 2054FG]
-      Takiptekiler: @kullanici2
+@targetuser (Full Name) [15234F / 756FG]
+  Followers: @user1
+    @user1 (User One) [502F / 2054FG]
+      Followers: @user2
         ...
-  Takip ettikleri: @kullanici3
-    @kullanici3 (Kullanıcı Üç) [62181F / 6FG]
-      Takip ettikleri: @kullanici4
+  Following: @user3
+    @user3 (User Three) [62181F / 6FG]
+      Following: @user4
         ...
 ```
 
-Her kullanıcının profili detaylı gösterilir ve bağlantı grafı çıkarılır (kim kimi takip ediyor, kimler grafta ortak).
+Each user's profile is shown in detail (bio, follower counts, private/verified status), and the connection graph maps who follows whom.
 
 ---
 
 ### 4. Telegram Search
 
 ```bash
-# Username ile ara
-osintool --auth hedefusername --auth-platforms telegram
+# Search by username
+osintool --auth targetuser --auth-platforms telegram
 
-# Telefon numarası ile ara
+# Search by phone number
 osintool --auth "+905551234567" --auth-platforms telegram
 ```
 
-Telegram: profil fotoğrafını indirir, ortak grupları listeler, son görülme durumunu gösterir.
+Telegram: downloads profile photo, lists common groups, shows last seen status.
 
 ---
 
 ### 5. WhatsApp Web Contact Lookup
 
 ```bash
-# Telefon numarası ile WhatsApp'ta ara
+# Search a phone number on WhatsApp
 osintool --auth "+905551234567" --auth-platforms whatsapp
 ```
 
-WhatsApp Web browser açılır. İlk seferde QR kodu telefonundan okutman gerekir. Session kaydedilir, bir daha QR istemez. Kişinin profil adı ve "about" bilgisi gösterilir.
+Opens WhatsApp Web in a browser. First time requires QR code scan from your phone. Session is saved — no QR needed afterwards. Shows contact name and "about" info.
 
 ---
 
 ### 6. Decrypt Saved Results
 
 ```bash
-# GUI ile
+# GUI mode
 founds
 
-# Terminalden (headless)
-founds --headless "şifren"
+# Headless (CLI mode)
+founds --headless "your_password"
 ```
 
 ---
@@ -136,22 +136,22 @@ founds --headless "şifren"
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `OSINTOOL_PASSWORD` | `osintool_default_change_me` | Search results encryption password |
-| `OSINTOOL_AUTH_PW` | `osintool_default_change_me` | Credential storage encryption password |
-| `TELEGRAM_API_ID` | — | Telegram API ID (api_id) |
-| `TELEGRAM_API_HASH` | — | Telegram API Hash (api_hash) |
+| `OSINTOOL_PASSWORD` | `osintool_default_change_me` | Password for encrypting search results |
+| `OSINTOOL_AUTH_PW` | `osintool_default_change_me` | Password for encrypting stored credentials |
+| `TELEGRAM_API_ID` | — | Telegram API ID (optional, can be stored in config) |
+| `TELEGRAM_API_HASH` | — | Telegram API Hash (optional, can be stored in config) |
 
 ## Security
 
 | File | Purpose |
 |------|---------|
-| `~/.osintool_auth.enc` | Encrypted API keys & passwords |
+| `~/.osintool_auth.enc` | Encrypted API keys & passwords (PBKDF2 + Fernet) |
 | `~/.founds.dat` | Encrypted search results |
 | `~/.founds.salt` | PBKDF2 salt |
 | `~/.osintool_tg_session` | Telegram session file |
 | `~/.osintool_wa_state/` | WhatsApp Web browser profile |
 
-Data at rest is encrypted with **PBKDF2 + Fernet (AES-256)**. Change the default encryption password via environment variables.
+All stored data is encrypted with **PBKDF2 + Fernet (AES-256)**. Change the default encryption password via environment variables.
 
 ## Disclaimer
 
