@@ -1,3 +1,4 @@
+import os
 import time
 from colorama import Fore, Style
 
@@ -8,11 +9,13 @@ class InstagramAuth:
         self.client = None
         self.visited = set()
         self.graph = {}
+        self._user_counter = 0
 
     def search(self, target, depth=2, max_per_level=5):
         from instagrapi import Client
         from instagrapi.exceptions import LoginRequired
 
+        self._root_user = target
         cl = Client()
         self.client = cl
         u = self.creds["username"]
@@ -23,6 +26,7 @@ class InstagramAuth:
 
         self._crawl(target, depth=depth, max_per_level=max_per_level)
         self._print_graph(target)
+        self._generate_report_if_needed(force=True)
         return self.graph
 
     def _crawl(self, username, depth=2, max_per_level=5):
@@ -54,6 +58,9 @@ class InstagramAuth:
             "url": f"https://instagram.com/{username}",
         }
 
+        self._user_counter += 1
+        self._generate_report_if_needed()
+
         if depth <= 1:
             return
 
@@ -80,6 +87,18 @@ class InstagramAuth:
                 self._crawl(f_username, depth - 1, max_per_level)
         except Exception as e:
             print(f"{indent}  {Fore.RED}[!] Following error: {e}{Style.RESET_ALL}")
+
+    def _generate_report_if_needed(self, force=False):
+        if not force and self._user_counter % 200 != 0:
+            return
+        if not self.graph:
+            return
+        try:
+            from ..report import generate_report
+            output_dir = os.path.expanduser("~")
+            generate_report(self.graph, self._root_user, output_dir=output_dir)
+        except Exception as e:
+            print(f"{Fore.RED}[!] PDF rapor hatasi: {e}{Style.RESET_ALL}")
 
     def _print_graph(self, root):
         print(f"\n{Fore.GREEN}{'='*60}{Style.RESET_ALL}")
