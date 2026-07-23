@@ -134,8 +134,25 @@ Examples:
     parser.add_argument("--set-reddit", action="store_true", help="Set Reddit credentials")
     parser.add_argument("--set-telegram", action="store_true", help="Set Telegram phone number")
     parser.add_argument("--list-auth", action="store_true", help="List configured platforms")
+    parser.add_argument("--gh-search", metavar="QUERY", help="Search GitHub repos by keyword (no login needed)")
 
     args = parser.parse_args()
+
+    if args.gh_search:
+        from .github_search import search_github, format_repo
+        items = search_github(args.gh_search, limit=10)
+        if items is None:
+            print(f"{Fore.RED}[!] GitHub API hatasi veya rate limit{Style.RESET_ALL}")
+        elif not items:
+            print(f"{Fore.YELLOW}[-] Sonuc bulunamadi{Style.RESET_ALL}")
+        else:
+            print(f"\n{Fore.GREEN}{'='*65}{Style.RESET_ALL}")
+            print(f"{Fore.GREEN}  GitHub - En cok yildiz alan repolar: '{args.gh_search}'{Style.RESET_ALL}")
+            print(f"{Fore.GREEN}{'='*65}{Style.RESET_ALL}")
+            for i, repo in enumerate(items, 1):
+                print(f"\n{Fore.YELLOW}[{i:02d}]{Style.RESET_ALL} {format_repo(repo)}")
+            print(f"\n{Fore.GREEN}{'='*65}{Style.RESET_ALL}")
+        return 0
 
     if args.auth_config:
         from .auth import cmd_auth_config
