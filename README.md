@@ -25,6 +25,27 @@ pip install -e .
 pip install -e ".[auth]"
 ```
 
+### Termux (Android)
+
+```bash
+curl -sL https://raw.githubusercontent.com/alisafakaya624-coder/osintool/main/termux.sh | bash
+```
+
+Or manually:
+
+```bash
+pkg update && pkg install -y python git
+pip install osintool colorama requests beautifulsoup4 cryptography fpdf2
+echo "alias osintool='python3 -m osintool'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Termux ipuçları:**
+- Instagram auth için: `pip install instagrapi`
+- Telegram auth için: `pip install telethon`
+- WhatsApp auth için: `pip install playwright playwright-stealth && playwright install chromium` (Termux'ta sorun çıkabilir)
+- GitHub search (`--gh-search`) token'siz çalışır, token ile 5000 istek/saat
+
 ## Usage
 
 ### 1. Public Search (300+ sites)
