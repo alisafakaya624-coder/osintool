@@ -102,13 +102,39 @@ def main():
     parser = argparse.ArgumentParser(
         description="OSINTool - Search usernames, names, and phone numbers across platforms",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  osintool -u username          # username search
-  osintool -n "John Doe"        # name search
-  osintool -p "+14155552671"    # phone search
-  osintool -u -n "John Smith"   # name search (alternative)
-  osintool --all "query"        # try all 3 types with the same query
+        epilog=f"""
+{Fore.CYAN}═══════════════════════════════════════════════════════════{Style.RESET_ALL}
+{Fore.GREEN}  KULLANIM ŞEKLİ{Style.RESET_ALL}
+{Fore.CYAN}═══════════════════════════════════════════════════════════{Style.RESET_ALL}
+
+{Fore.YELLOW}1. KULLANICI / İSİM / TELEFON ARA{Style.RESET_ALL}
+   osintool -u <kullaniciadi>         {Fore.WHITE}# 300+ sitede kullanıcı adı ara{Style.RESET_ALL}
+   osintool -n "Ad Soyad"             {Fore.WHITE}# isim ara{Style.RESET_ALL}
+   osintool -p "+905551234567"        {Fore.WHITE}# telefon ara{Style.RESET_ALL}
+   osintool --all "query"             {Fore.WHITE}# hepsini dene{Style.RESET_ALL}
+
+{Fore.YELLOW}2. INSTAGRAM AUTH (follower/following crawl){Style.RESET_ALL}
+   osintool --auth <hedef>            {Fore.WHITE}# Instagram baglanti grafigi{Style.RESET_ALL}
+   osintool --auth <hedef> --auth-depth 3 --auth-max 15
+                                      {Fore.WHITE}# 3 seviye derinlik, her seviyede max 15 kullanici{Style.RESET_ALL}
+   Not: Her 200 kullanicida bir PDF rapor (~/siber_suc_dosyasi_*.pdf)
+
+{Fore.YELLOW}3. AUTH KREDENSIYON YONETIMI{Style.RESET_ALL}
+   osintool --set-instagram           {Fore.WHITE}# Instagram kullanici adi/sifre ekle{Style.RESET_ALL}
+   osintool --set-github              {Fore.WHITE}# GitHub token ekle{Style.RESET_ALL}
+   osintool --set-reddit              {Fore.WHITE}# Reddit API kredensiyonlari ekle{Style.RESET_ALL}
+   osintool --set-telegram            {Fore.WHITE}# Telegram telefon/API bilgisi ekle{Style.RESET_ALL}
+   osintool --list-auth               {Fore.WHITE}# kayitli platformlari listele{Style.RESET_ALL}
+
+{Fore.YELLOW}4. GITHUB REPO ARA (giris yok, ucretsiz){Style.RESET_ALL}
+   osintool --gh-search "yapay zeka"  {Fore.WHITE}# en cok yildiz alan 10 repoyu goster{Style.RESET_ALL}
+   osintool --gh-search "openai whisper"
+                                      {Fore.WHITE}# token varsa 5000 istek/saat, yoksa 60/saat{Style.RESET_ALL}
+
+{Fore.YELLOW}5. DIGER{Style.RESET_ALL}
+   osintool -u query --print-all     {Fore.WHITE}# bulunamayan siteleri de goster{Style.RESET_ALL}
+   osintool -u query --timeout 10    {Fore.WHITE}# timeout suresini degistir (sn){Style.RESET_ALL}
+   osintool -u query --no-color      {Fore.WHITE}# renksiz cikti{Style.RESET_ALL}
         """,
     )
 
@@ -138,9 +164,18 @@ Examples:
 
     args = parser.parse_args()
 
+    if args.set_instagram or args.set_github or args.set_reddit or args.set_telegram or args.list_auth:
+        from .auth import cmd_auth_config
+        cmd_auth_config(args)
+        return 0
+
     if args.gh_search:
+        from .auth.config import AuthConfig
         from .github_search import search_github, format_repo
-        items = search_github(args.gh_search, limit=10)
+        cfg = AuthConfig()
+        gh_creds = cfg.get("github", {})
+        token = gh_creds.get("token") if gh_creds else None
+        items = search_github(args.gh_search, limit=10, token=token)
         if items is None:
             print(f"{Fore.RED}[!] GitHub API hatasi veya rate limit{Style.RESET_ALL}")
         elif not items:
@@ -154,12 +189,12 @@ Examples:
             print(f"\n{Fore.GREEN}{'='*65}{Style.RESET_ALL}")
         return 0
 
-    if args.auth_config:
-        from .auth import cmd_auth_config
-        cmd_auth_config(args)
-        return 0
-
     if args.auth:
+        from .auth import search_target
+        platforms = [p for p in args.auth_platforms if p != "all"] if args.auth_platforms else None
+        kwargs = {"depth": args.auth_depth, "max_per_level": args.auth_max}
+        search_target(args.auth, platforms, **kwargs)
+        return 0
         from .auth import search_target
         platforms = [p for p in args.auth_platforms if p != "all"] if args.auth_platforms else None
         kwargs = {"depth": args.auth_depth, "max_per_level": args.auth_max}

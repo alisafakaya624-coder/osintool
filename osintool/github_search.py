@@ -2,7 +2,7 @@ import requests
 from colorama import Fore, Style
 
 
-def search_github(query, limit=10):
+def search_github(query, limit=10, token=None):
     url = "https://api.github.com/search/repositories"
     params = {
         "q": query,
@@ -14,6 +14,8 @@ def search_github(query, limit=10):
         "Accept": "application/vnd.github.v3+json",
         "User-Agent": "osintool/1.0",
     }
+    if token:
+        headers["Authorization"] = f"token {token}"
     try:
         resp = requests.get(url, params=params, headers=headers, timeout=15)
         if resp.status_code != 200:
